@@ -96,9 +96,7 @@ export default function ValkyriesSchedulePage() {
       a.click();
     }
   };
-  const openGoogleCalendar = () => {
-    alert("Pour importer les matchs dans Google Calendar :\n\n1. Téléchargez le fichier .ics\n2. Ouvrez Google Calendar\n3. Cliquez sur la roue crantée (en haut à droite) > 'Paramètres'\n4. Allez dans 'Importer et exporter'\n5. Sélectionnez le fichier téléchargé\n6. Importez-le dans votre calendrier !");
-  };
+ 
   
   
   // const openGoogleCalendar = () => {
@@ -118,8 +116,39 @@ export default function ValkyriesSchedulePage() {
   };
   
   
-  if (loading) return <p className="p-4">Les matchs arrivent.....</p>;
-
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-80">
+        <div className="relative w-72 h-80 overflow-hidden rounded-xl shadow-lg bg-gray-200">
+          <img
+            src="/loader.jpg"
+            alt="Chargement des matchs"
+            className="absolute top-0 left-0 w-full h-full object-countain object-center animate-reveal-image"
+          />
+        </div>
+        <style jsx>{`
+          @keyframes reveal-image {
+            0% {
+              clip-path: inset(0 100% 0 0);
+              opacity: 1;
+            }
+            100% {
+              clip-path: inset(0 0% 0 0);
+              opacity: 1;
+            }
+          }
+  
+          .animate-reveal-image {
+            animation: reveal-image 2.5s ease-out forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
+          }
+        `}</style>
+      </div>
+    );
+  }
+  
+  
   return (
     <div className="relative max-w-2xl mx-auto p-6">
       <ul className="space-y-4">
