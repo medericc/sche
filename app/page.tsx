@@ -220,7 +220,7 @@ export default function ValkyriesSchedulePage() {
   </DialogTitle>
 
   {!showGoogleInstructions ? (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-2">
       <button
         onClick={generateICS}
         className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
