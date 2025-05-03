@@ -243,13 +243,13 @@ export default function ValkyriesSchedulePage() {
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="bg-white rounded-xl p-6 max-w-sm mx-auto shadow-xl">
+        <DialogPanel className="bg-white rounded-xl p-6 pb-2 max-w-sm mx-auto shadow-xl">
   <DialogTitle className="text-xl font-bold mb-2 text-center">
     Ajouter tous les matchs à votre calendrier ?
   </DialogTitle>
 
   {!showGoogleInstructions ? (
-    <div className="flex flex-col gap-4 mt-2">
+    <div className="flex flex-col gap-4 mt-6">
       <button
         onClick={generateICS}
         className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
@@ -264,46 +264,45 @@ export default function ValkyriesSchedulePage() {
       </button>
       <button
         onClick={() => setIsModalOpen(false)}
-        className="text-sm text-gray-500 mt-2"
+        className="text-sm text-gray-500 mt-1"
       >
         Annuler
       </button>
     </div>
   ) : (
-    <div className="max-w-lg mx-auto bg-white rounded-2xl p-6 space-y-4 text-gray-800 text-center">
-    <p className="text-green-600 font-semibold text-base">✅ Le fichier a été téléchargé !</p>
-    <p className="text-lg font-medium">Voici comment l'importer dans Google Calendar :</p>
-    <ul className="list-decimal list-inside text-left pl-5 space-y-2 text-base leading-relaxed">
-      <li>
-        Ouvrez <span className="font-semibold">Google Calendar</span>
-      </li>
-      <li>
-        Cliquez sur la roue crantée en haut à droite → <span className="font-semibold">Paramètres</span>
-      </li>
-      <li>
-        Allez dans <span className="font-semibold">Importer et exporter</span>
-      </li>
-      <li>
-        Sélectionnez le fichier téléchargé : <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">valkyries_matchs.ics</code>
-      </li>
-      <li>
-        Importez-le dans le calendrier de votre choix
-      </li>
-      <li className="font-medium ">
-        🎉 Tous les matchs de Carla sont maintenant dans votre agenda !
-      </li>
-    </ul>
-
-      <button
-        onClick={() => {
-          setIsModalOpen(false);
-          setShowGoogleInstructions(false);
-        }}
-        className="mt-4 text- text-purple-700 font-semibold hover:underline"
-      >
-        Fermer
-      </button>
-    </div>
+    <div className="max-w-md mx-auto bg-white rounded-lg p-4 space-y-3 text-gray-800 text-center ">
+  <p className="text-green-600 font-semibold text-sm">✅ Le fichier a été téléchargé !</p>
+  <p className="text-base font-medium">Voici comment l'importer dans Google Calendar :</p>
+  <ul className="list-decimal list-inside text-left pl-4 space-y-1 text-sm leading-relaxed mb-2">
+    <li>
+      Ouvrez <span className="font-semibold">Google Calendar</span>
+    </li>
+    <li>
+      Cliquez sur la roue crantée en haut à droite → <span className="font-semibold">Paramètres</span>
+    </li>
+    <li>
+      Allez dans <span className="font-semibold">Importer et exporter</span>
+    </li>
+    <li>
+      Sélectionnez le fichier téléchargé : <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">valkyries_matchs.ics</code>
+    </li>
+    <li>
+      Importez-le dans le calendrier de votre choix
+    </li>
+    <li className="font-medium">
+      🎉 Tous les matchs de Carla sont maintenant dans votre agenda !
+    </li>
+  </ul>
+  <button
+    onClick={() => {
+      setIsModalOpen(false);
+      setShowGoogleInstructions(false);
+    }}
+    className="mt-6 text-sm text-purple-700 font-semibold hover:underline"
+  >
+    Fermer
+  </button>
+</div>
   )}
 </DialogPanel>
 
