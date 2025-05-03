@@ -31,7 +31,6 @@ export default function ValkyriesSchedulePage() {
   const [loading, setLoading] = useState(true);
   const [showLocalTimes, setShowLocalTimes] = useState<{ [key: string]: boolean }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showGoogleInstructions, setShowGoogleInstructions] = useState(false);
 
   useEffect(() => {
     const getMatches = async () => {
@@ -113,10 +112,11 @@ export default function ValkyriesSchedulePage() {
   //   window.open(link, '_blank');
   // };
   const handleGoogleCalendarImport = () => {
-    generateICS();
-    setShowGoogleInstructions(true);
+    generateICS(); // ça va générer et télécharger le .ics
+    setTimeout(() => {
+      openGoogleCalendar(); // ensuite on explique à l'utilisateur
+    }, 500); // petite pause pour éviter de bloquer le clic
   };
-  
   
   if (loading) return <p className="p-4">Les matchs arrivent.....</p>;
 
@@ -137,66 +137,35 @@ export default function ValkyriesSchedulePage() {
           const flagCode = isLocal ? locale.split('-')[1]?.toLowerCase() || 'us' : 'fr';
 
           return (
-              <li key={match.id}>
-            <Card className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-xl">
-              <CardHeader className="text-center border-b p-4">
-                <p className="text-xl font-semibold text-gray-800 tracking-wide">
-                  {dayLabel}
-                </p>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pl-6 pr-8 md:pl-16 md:pr-24 lg:pl-18 lg:pr-26 py-4">
-                {/* Logo + Name */}
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-md bg-white  flex items-center justify-center overflow-hidden">
-                    <img
-                      src={match.opponentLogo}
-                      alt={match.opponent}
-                      className="object-contain w-10 h-10"
-                    />
+            <li key={match.id}>
+              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-xl">
+                <CardHeader className="text-center border-b p-4">
+                  <p className="text-xl font-semibold text-gray-800 tracking-wide">{dayLabel}</p>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center overflow-hidden">
+                      <img src={match.opponentLogo} alt={match.opponent} className="object-contain w-10 h-10" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900 max-w-[140px] break-words leading-tight">
+                      {match.opponent}
+                    </p>
                   </div>
-                  <p className="text-sm font-medium text-gray-900 max-w-[140px] break-words leading-tight">
-    {match.opponent}
-  </p>
-     </div>
-  
-                {/* Time box */}
-                <div className="flex flex-col items-center text-sm text-gray-700 mt-1">
-                  <img
-                    src={`https://flagcdn.com/w40/${flagCode}.png`}
-                    alt={flagCode.toUpperCase()}
-                    className="w-5 h-4 mb-1"
-                  />
-                  <div
-                    className="flex items-center gap-1 cursor-pointer"
-                    onClick={() =>
-                      setShowLocalTimes((prev) => ({
-                        ...prev,
-                        [match.id]: !prev[match.id],
-                      }))
-                    }
-                    title="Cliquez pour afficher l'heure locale"
-                  >
-                    <Clock className="w-3 h-3" />
-                   <span className="text-sm">{hourLabel}</span>
-  
+                  <div className="flex flex-col items-center text-sm text-gray-700 mt-1">
+                    <img src={`https://flagcdn.com/w40/${flagCode}.png`} alt={flagCode.toUpperCase()} className="w-5 h-4 mb-1" />
+                    <div className="flex items-center gap-1 cursor-pointer" onClick={() => setShowLocalTimes((prev) => ({ ...prev, [match.id]: !prev[match.id] }))}>
+                      <Clock className="w-3 h-3" />
+                      <span>{hourLabel}</span>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-              <CardFooter className="bg-purple-900 p-2 rounded-b-xl flex justify-center">
-    <a
-      href={match.link} // Assure-toi que match.link contient une URL valide
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-base font-semibold text-white tracking-wide hover:underline"
-    >
-      MATCH DISPONIBLE ICI
-    </a>
-  </CardFooter>
-  
-  
-  
-            </Card>
-          </li>
+                </CardContent>
+                <CardFooter className="bg-purple-900 p-2 rounded-b-xl flex justify-center">
+                  <a href={match.link} target="_blank" rel="noopener noreferrer" className="text-white font-semibold hover:underline">
+                    MATCH DISPONIBLE ICI
+                  </a>
+                </CardFooter>
+              </Card>
+            </li>
           );
         })}
       </ul>
@@ -214,70 +183,32 @@ export default function ValkyriesSchedulePage() {
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="bg-white rounded-xl p-6 max-w-sm mx-auto shadow-xl">
-  <DialogTitle className="text-xl font-bold mb-2 text-center">
-    Ajouter tous les matchs à votre calendrier ?
-  </DialogTitle>
+          <DialogPanel className="bg-white rounded-xl p-6 max-w-sm mx-auto shadow-xl">
+            <DialogTitle className="text-lg font-bold mb-4">
+              Ajouter tous les matchs à votre calendrier ?
+            </DialogTitle>
 
-  {!showGoogleInstructions ? (
-    <div className="flex flex-col gap-4">
-      <button
-        onClick={generateICS}
-        className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
-      >
-        📅 Apple / Outlook (.ics)
-      </button>
-      <button
-        onClick={handleGoogleCalendarImport}
-        className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
-      >
-        📆 Google Calendar
-      </button>
-      <button
-        onClick={() => setIsModalOpen(false)}
-        className="text-sm text-gray-500 mt-2"
-      >
-        Annuler
-      </button>
-    </div>
-  ) : (
-    <div className="max-w-lg mx-auto bg-white rounded-2xl p-6 space-y-4 text-gray-800 text-center">
-    <p className="text-green-600 font-semibold text-base">✅ Le fichier a été téléchargé !</p>
-    <p className="text-lg font-medium">Voici comment l'importer dans Google Calendar :</p>
-    <ul className="list-decimal list-inside text-left pl-5 space-y-2 text-base leading-relaxed">
-      <li>
-        Ouvrez <span className="font-semibold">Google Calendar</span>
-      </li>
-      <li>
-        Cliquez sur la roue crantée en haut à droite → <span className="font-semibold">Paramètres</span>
-      </li>
-      <li>
-        Allez dans <span className="font-semibold">Importer et exporter</span>
-      </li>
-      <li>
-        Sélectionnez le fichier téléchargé : <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">valkyries_matchs.ics</code>
-      </li>
-      <li>
-        Importez-le dans le calendrier de votre choix
-      </li>
-      <li className="font-medium ">
-        🎉 Tous les matchs de Carla sont maintenant dans votre agenda !
-      </li>
-    </ul>
-
-      <button
-        onClick={() => {
-          setIsModalOpen(false);
-          setShowGoogleInstructions(false);
-        }}
-        className="mt-4 text- text-purple-700 font-semibold hover:underline"
-      >
-        Fermer
-      </button>
-    </div>
-  )}
-</DialogPanel>
-
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={generateICS}
+                className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
+              >
+                📅 Apple / Outlook (.ics)
+              </button>
+              <button
+                onClick={handleGoogleCalendarImport}
+                className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
+              >
+                📆 Google Calendar
+              </button>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-sm text-gray-500 mt-2"
+              >
+                Annuler
+              </button>
+            </div>
+          </DialogPanel>
         </div>
       </Dialog>
     </div>
