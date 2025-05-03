@@ -310,7 +310,7 @@ export default function ValkyriesSchedulePage() {
   ) : showiOSInstructions ? (
     <div className="max-w-md mx-auto bg-white rounded-lg p-4 space-y-3 text-gray-800 text-center ">
       <p className="text-green-600 font-semibold text-sm">✅ Le fichier a été téléchargé !</p>
-      <p className="text-base font-medium">Voici comment l'importer sur iPhone :</p>
+      <p className="text-base font-medium">Si pas déjà importer :</p>
       <ul className="list-decimal list-inside text-left pl-4 space-y-1 text-sm leading-relaxed mb-2">
         <li>Ouvrez l'application <span className="font-semibold">Fichiers</span></li>
         <li>Rendez-vous dans le dossier <span className="font-semibold">Téléchargements</span></li>
