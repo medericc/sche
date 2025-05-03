@@ -43,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     MATCH DE CARLA
 </header>
               <main className="container mx-auto mt-4">{children}</main>
+              <Analytics />
           </body>
       </html>
   );
