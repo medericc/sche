@@ -182,7 +182,7 @@ export default function ValkyriesSchedulePage() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="bg-purple-800 p-2 rounded-b-xl flex justify-center">
+              <CardFooter className="bg-purple-700 p-2 rounded-b-xl flex justify-center">
     <a
       href={match.link} // Assure-toi que match.link contient une URL valide
       target="_blank"
