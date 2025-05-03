@@ -6,7 +6,7 @@ import { Clock, CalendarPlus } from "lucide-react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { createEvents } from "ics";
 
-// Match type
+
 type Match = {
   id: string;
   date: Date;

@@ -1,12 +1,13 @@
 import './globals.css';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
     title: "Carla Schedule",
     description: "Les matchs de Carla.",
     icons: {
-        icon: "/favicon.ico", // Pour le favicon par défaut
-        shortcut: "/favicon.ico", // Pour les navigateurs type iOS
-        apple: "/apple-touch-icon.png", // iPhone/iPad
+        icon: "/favicon.ico", 
+        shortcut: "/favicon.ico", 
+        apple: "/apple-touch-icon.png", 
     },
     openGraph: {
       title: "Carla Schedule",
@@ -24,7 +25,7 @@ export const metadata = {
       type: "website",
     },
     twitter: {
-      card: "summary_large_image", // ✅ Correction ici
+      card: "summary_large_image", 
       title: "Carla Schedule",
       description: "Les matchs de Carla.",
       images: ["https://carla-schedule.vercel.app/preview.jpg"], // Même image que Open Graph
