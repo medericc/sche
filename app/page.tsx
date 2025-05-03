@@ -118,30 +118,30 @@ export default function ValkyriesSchedulePage() {
   
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-80">
-        <div className="relative w-72 h-80 overflow-hidden rounded-xl shadow-lg bg-gray-200">
+      <div className="flex justify-center items-center h-[calc(100vh-72px)] -mt-16">
+  <div className="relative w-72 h-80 overflow-hidden">
           <img
             src="/loader.jpg"
             alt="Chargement des matchs"
-            className="absolute top-0 left-0 w-full h-full object-countain object-center animate-reveal-image"
+            className="absolute top-0 left-0 w-full h-full object-contain object-center animate-reveal-image"
           />
         </div>
         <style jsx>{`
           @keyframes reveal-image {
             0% {
-              clip-path: inset(0 100% 0 0);
-              opacity: 1;
+              clip-path: inset(0 100% 0 0); /* Masque total de l'image de gauche à droite */
+              transform: scale(1); /* Pas de redimensionnement */
+              opacity: 1; /* L'image est visible mais masquée */
             }
             100% {
-              clip-path: inset(0 0% 0 0);
-              opacity: 1;
+              clip-path: inset(0 0 0 0); /* L'image est complètement révélée */
+              transform: scale(1); /* L'image conserve sa taille normale */
+              opacity: 1; /* L'image reste visible */
             }
           }
   
           .animate-reveal-image {
             animation: reveal-image 2.5s ease-out forwards;
-            opacity: 0;
-            animation-fill-mode: forwards;
           }
         `}</style>
       </div>
