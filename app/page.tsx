@@ -32,7 +32,7 @@ export default function ValkyriesSchedulePage() {
   const [showLocalTimes, setShowLocalTimes] = useState<{ [key: string]: boolean }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showGoogleInstructions, setShowGoogleInstructions] = useState(false);
-
+ const [showiOSInstructions, setShowiOSInstructions] = useState(false); 
   useEffect(() => {
     const getMatches = async () => {
       const res = await fetch(
@@ -110,9 +110,9 @@ export default function ValkyriesSchedulePage() {
   //   const link = `${base}&dates=${start}/${end}&text=${text}&details=${details}`;
   //   window.open(link, '_blank');
   // };
-  const handleGoogleCalendarImport = () => {
-    generateICS();
-    setShowGoogleInstructions(true);
+  const handleAppleOutlookImport = () => {
+    generateICS(); // Télécharge le fichier .ics
+    setShowiOSInstructions(true); // Affiche les instructions iOS
   };
   
   
@@ -148,7 +148,10 @@ export default function ValkyriesSchedulePage() {
     );
   }
   
-  
+  const handleGoogleCalendarImport = () => {
+    generateICS();
+    setShowGoogleInstructions(true);
+  };
   return (
     <div className="relative max-w-2xl mx-auto p-6">
       <ul className="space-y-4">
@@ -242,22 +245,23 @@ export default function ValkyriesSchedulePage() {
       {/* Modal */}
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
+        
         <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="bg-white rounded-xl p-6 pb-2 max-w-sm mx-auto shadow-xl">
   <DialogTitle className="text-xl font-bold mb-2 text-center">
     Ajouter tous les matchs à votre calendrier ?
   </DialogTitle>
 
-  {!showGoogleInstructions ? (
+  {!showGoogleInstructions && !showiOSInstructions ? (
     <div className="flex flex-col gap-4 mt-6">
       <button
-        onClick={generateICS}
+        onClick={handleAppleOutlookImport}
         className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
       >
         📅 Apple / Outlook (.ics)
       </button>
       <button
-        onClick={handleGoogleCalendarImport}
+        onClick={handleGoogleCalendarImport }
         className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm"
       >
         📆 Google Calendar
@@ -269,41 +273,62 @@ export default function ValkyriesSchedulePage() {
         Annuler
       </button>
     </div>
-  ) : (
+  ) : showGoogleInstructions ? (
     <div className="max-w-md mx-auto bg-white rounded-lg p-4 space-y-3 text-gray-800 text-center ">
-  <p className="text-green-600 font-semibold text-sm">✅ Le fichier a été téléchargé !</p>
-  <p className="text-base font-medium">Voici comment l'importer dans Google Calendar :</p>
-  <ul className="list-decimal list-inside text-left pl-4 space-y-1 text-sm leading-relaxed mb-2">
-    <li>
-      Ouvrez <span className="font-semibold">Google Calendar</span>
-    </li>
-    <li>
-      Cliquez sur la roue crantée en haut à droite → <span className="font-semibold">Paramètres</span>
-    </li>
-    <li>
-      Allez dans <span className="font-semibold">Importer et exporter</span>
-    </li>
-    <li>
-      Sélectionnez le fichier téléchargé : <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">valkyries_matchs.ics</code>
-    </li>
-    <li>
-      Importez-le dans le calendrier de votre choix
-    </li>
-    <li className="font-medium">
-      🎉 Tous les matchs de Carla sont maintenant dans votre agenda !
-    </li>
-  </ul>
-  <button
-    onClick={() => {
-      setIsModalOpen(false);
-      setShowGoogleInstructions(false);
-    }}
-    className="mt-6 text-sm text-purple-700 font-semibold hover:underline"
-  >
-    Fermer
-  </button>
-</div>
-  )}
+      <p className="text-green-600 font-semibold text-sm">✅ Le fichier a été téléchargé !</p>
+      <p className="text-base font-medium">Voici comment l'importer dans Google Calendar :</p>
+      <ul className="list-decimal list-inside text-left pl-4 space-y-1 text-sm leading-relaxed mb-2">
+        <li>
+          Ouvrez <span className="font-semibold">Google Calendar</span>
+        </li>
+        <li>
+          Cliquez sur la roue crantée en haut à droite → <span className="font-semibold">Paramètres</span>
+        </li>
+        <li>
+          Allez dans <span className="font-semibold">Importer et exporter</span>
+        </li>
+        <li>
+          Sélectionnez le fichier téléchargé : <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">valkyries_matchs.ics</code>
+        </li>
+        <li>
+          Importez-le dans le calendrier de votre choix
+        </li>
+        <li className="font-medium">
+          🎉 Tous les matchs de Carla sont maintenant dans votre agenda !
+        </li>
+      </ul>
+      <button
+        onClick={() => {
+          setIsModalOpen(false);
+          setShowGoogleInstructions(false);
+        }}
+        className="mt-6 text-sm text-purple-700 font-semibold hover:underline"
+      >
+        Fermer
+      </button>
+    </div>
+  ) : showiOSInstructions ? (
+    <div className="max-w-md mx-auto bg-white rounded-lg p-4 space-y-3 text-gray-800 text-center ">
+      <p className="text-green-600 font-semibold text-sm">✅ Le fichier a été téléchargé !</p>
+      <p className="text-base font-medium">Voici comment l'importer sur iPhone :</p>
+      <ul className="list-decimal list-inside text-left pl-4 space-y-1 text-sm leading-relaxed mb-2">
+        <li>Ouvrez l'application <span className="font-semibold">Fichiers</span></li>
+        <li>Rendez-vous dans le dossier <span className="font-semibold">Téléchargements</span></li>
+        <li>Appuyez sur le fichier <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">valkyries_matchs.ics</code></li>
+        <li>Choisissez <span className="font-semibold">Ajouter à Calendrier</span> si proposé</li>
+        <li className="font-medium">📅 Tous les matchs sont maintenant ajoutés à votre calendrier !</li>
+      </ul>
+      <button
+        onClick={() => {
+          setIsModalOpen(false);
+          setShowiOSInstructions(false);
+        }}
+        className="mt-6 text-sm text-purple-700 font-semibold hover:underline"
+      >
+        Fermer
+      </button>
+    </div>
+  ) : null}
 </DialogPanel>
 
         </div>
